@@ -1,9 +1,7 @@
 package main;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A representation of an HTML File Server Directory 

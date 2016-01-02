@@ -10,14 +10,12 @@ import java.util.ArrayList;
 
 public class HTMLFile 
 {
-	/**
-	 * 
-	 */
 	private boolean isDirectory = false;
 	private RawHTMLFile rawHTML = null;
-	private String mRelativePath;
+	private String mAbsolutePath;
 	private String mURL = null;
-	private String mFileName = null;	
+	private String mFileName = null;
+	
 	public HTMLFile()
 	{
 		
@@ -37,14 +35,14 @@ public class HTMLFile
 		}
 				
 		//throws an exception if the url given is the home page... which means it is not a folder... I think
-		if (getRelativePath().equals("/"))
+		if (getAbsolutePath().equals("/"))
 		{
 			throw new FileNotFoundException();
 		}
 		else
 		{
-			mRelativePath = getRelativePath();
-			mFileName = determineActualFileName(mRelativePath);
+			mAbsolutePath = getAbsolutePath();
+			mFileName = determineActualFileName(mAbsolutePath);
 		}
 		
 		isDirectory = determineIfDirectory();
@@ -66,7 +64,7 @@ public class HTMLFile
 	}
 	
 	
-	public String getRelativePath()
+	public String getAbsolutePath()
 	{
 		return rawHTML.getRelativeURL();
 	}
@@ -114,7 +112,7 @@ public class HTMLFile
 	
 	public void download(String destination)
 	{
-		String path = getRelativePath();
+		String path = getAbsolutePath();
 		BufferedWriter bw = null;
 		File file = null;
 		
