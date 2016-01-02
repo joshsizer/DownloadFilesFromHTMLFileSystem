@@ -23,7 +23,7 @@ public class Main {
 			System.out.println("URL has no folders...");
 		} 
 			
-		workingDirectory.downloadAllFiles(null);
+		workingDirectory.downloadAllFiles();
 		
 		System.out.println("\nDownload complete.");
 	}
