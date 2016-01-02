@@ -85,7 +85,6 @@ public class Directory
 	
 	/**
 	 * Downloads all the files in an HTMLFile directory.
-	 * @param currentFolder the HTMLFile to download the files from.
 	 */
 	public void downloadAllFiles()
 	{

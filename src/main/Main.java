@@ -1,6 +1,5 @@
 package main;
 
-
 import java.io.FileNotFoundException;
 
 public class Main {
@@ -10,13 +9,11 @@ public class Main {
 	
 	public static void main(String[] args)
 	{
-		HTMLFile rootFolder = null;
 		Directory workingDirectory = null;
 	
 		try 
 		{
-			rootFolder = new HTMLFile(rootURL);
-			workingDirectory = new Directory(rootFolder, DESTINATION );
+			workingDirectory = new Directory(new HTMLFile(rootURL), DESTINATION );
 		} 
 		catch (FileNotFoundException e) 
 		{

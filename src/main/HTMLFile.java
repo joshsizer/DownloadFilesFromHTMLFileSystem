@@ -10,13 +10,14 @@ import java.util.ArrayList;
 
 public class HTMLFile 
 {
+	/**
+	 * 
+	 */
 	private boolean isDirectory = false;
 	private RawHTMLFile rawHTML = null;
 	private String mRelativePath;
 	private String mURL = null;
-	private String mFileName = null;
-	private String mParentFile = null;
-	
+	private String mFileName = null;	
 	public HTMLFile()
 	{
 		
@@ -35,7 +36,7 @@ public class HTMLFile
 			System.out.println("Malformed URL...");
 		}
 				
-		//if the url given is the home page... which means it is not a folder... I think
+		//throws an exception if the url given is the home page... which means it is not a folder... I think
 		if (getRelativePath().equals("/"))
 		{
 			throw new FileNotFoundException();
@@ -64,15 +65,6 @@ public class HTMLFile
 		return isDirectory;
 	}
 	
-	public String getParentFile() throws NullPointerException
-	{
-		if (!hasParentFile())
-		{
-			throw new NullPointerException();
-		}
-		
-		return mParentFile;
-	}
 	
 	public String getRelativePath()
 	{
@@ -89,20 +81,6 @@ public class HTMLFile
 		return rawHTML.getFileAsStringLn();
 	}
 	
-	public boolean hasParentFile()
-	{
-		boolean result;
-		if (mParentFile == null)
-		{
-			result = false;
-		}
-		else
-		{
-			result = true;
-		}
-		return result;
-	}
-	
 	public HTMLFile[] listFiles()
 	{
 		ArrayList<HTMLFile> fileList = new ArrayList<HTMLFile>();
@@ -111,7 +89,7 @@ public class HTMLFile
 		//this function only gets called if the this object is a directory
 		fileList = HTMLParser.getFile(this);
 		
-		//because ArrayLists creates 10 elements at a time, and if they are not all filled, the remaining are null
+		//ArrayLists create 10 elements at a time, and if they are not all filled, the remaining are null
 		//so they can't be returned by the .toArray function (ugh)
 		int size = 0;
 		//finds the number of HTMLFile objects in fileList
@@ -138,7 +116,6 @@ public class HTMLFile
 	{
 		String path = getRelativePath();
 		BufferedWriter bw = null;
-		FileWriter fw = null;
 		File file = null;
 		
 		System.out.println("Downloading: " + getURL() + "...");
@@ -164,8 +141,7 @@ public class HTMLFile
 				file.createNewFile();
 			}
 		
-			fw = new FileWriter(file);
-			bw = new BufferedWriter(fw);
+			bw = new BufferedWriter(new FileWriter(file));
 			bw.write(getRawHTMLLn());
 			bw.close();
 		} 
@@ -195,7 +171,7 @@ public class HTMLFile
 				{	
 					lastSlash = i;			//sets location of the first slash
 				}
-				else 								//else if the first slash has already been found
+				else	//else if the first slash has already been found
 				{
 					secondToLastSlash = lastSlash;	//current slash is equal to the last slash found in relative path
 					lastSlash = i;					//and secondToLastSlash is equal to the previously found slash
@@ -210,7 +186,7 @@ public class HTMLFile
 			//the filename is set to what's between second to last slash and last slash
 			fileName = relativePath.substring(secondToLastSlash + 1, lastSlash); 
 		}
-		else										//if the last slash is not at the end of the relative path
+		else	//if the last slash is not at the end of the relative path
 		{
 			//the filename is set to what's between the last found slash and the end of the relative path
 			fileName = relativePath.substring(lastSlash + 1);
@@ -219,10 +195,12 @@ public class HTMLFile
 		return fileName;
 	}
 	
+	
 	private boolean determineIfDirectory()
 	{
 		boolean tempIsDirectory;
 		
+		//basically an HTMLFile is a directory if the name does not contain a file extensions
 		if (mFileName.contains("."))
 		{
 			tempIsDirectory = false;
