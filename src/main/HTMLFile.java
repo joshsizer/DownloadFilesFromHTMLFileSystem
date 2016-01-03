@@ -23,29 +23,31 @@ public class HTMLFile
 	
 	public HTMLFile(String URL) throws FileNotFoundException
 	{
-		mURL = URL;
 		
 		try
 		{
-			rawHTML = new RawHTMLFile(mURL);
+			rawHTML = new RawHTMLFile(URL);
 		}
 		catch (MalformedURLException e)
 		{
 			System.out.println("Malformed URL...");
 		}
-				
+		
 		//throws an exception if the url given is the home page... which means it is not a folder... I think
-		if (getAbsolutePath().equals("/"))
+		if (getAbsolutePath().equals("") || getAbsolutePath().equals("/") )
 		{
 			throw new FileNotFoundException();
 		}
-		else
-		{
-			mAbsolutePath = getAbsolutePath();
-			mFileName = determineActualFileName(mAbsolutePath);
-		}
-		
+	
+		mAbsolutePath = getAbsolutePath();
+		mFileName = determineActualFileName(mAbsolutePath);
 		isDirectory = determineIfDirectory();
+		
+		if (isDirectory && !URL.endsWith("/"))
+		{
+			URL = URL.concat("/");
+		}
+		mURL = URL;
 	}
 	
 	public String getName()
@@ -85,7 +87,14 @@ public class HTMLFile
 		
 		//parses out all the the files within this HTMLFile
 		//this function only gets called if the this object is a directory
-		fileList = HTMLParser.getFile(this);
+		try 
+		{
+			fileList = HTMLParser.getFile(this);
+		} 
+		catch (FileFormatException e) 
+		{
+			System.out.println(mURL + " is not parsable.");
+		}
 		
 		//ArrayLists create 10 elements at a time, and if they are not all filled, the remaining are null
 		//so they can't be returned by the .toArray function (ugh)
