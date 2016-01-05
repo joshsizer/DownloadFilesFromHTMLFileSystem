@@ -24,12 +24,11 @@ public class HTMLParser
 		{
 			isParsable = true;
 			HTMLFile currentFile = null;
-			//You could do this, but who wants to read it? 
-			//rawList.add(rawHTMLList.substring(rawHTMLList.indexOf("<li>"), rawHTMLList.indexOf("</li")));
-			elementStart = rawHTML.indexOf("<li><a href=");
+			//+13 is the character count of "<li><a..." so the path is after
+			elementStart = rawHTML.indexOf("<li><a href=") + 13;
 			elementEnd = rawHTML.indexOf("\">");
 			
-			fileName = rawHTML.substring(elementStart + 13, elementEnd);
+			fileName = rawHTML.substring(elementStart, elementEnd);
 						
 			//as long as the current element is not the link to go to parent page
 			if (!fileName.equals("../") && fileName != null)
